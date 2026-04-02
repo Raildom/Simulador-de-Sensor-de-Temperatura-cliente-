@@ -13,10 +13,10 @@ from config import MAX_ITENS_HISTORICO
 class Registro:
     """Representa uma leitura armazenada no historico local."""
     uuid:        str
-    id_sensor:   str
+    sensor_id:   str
     temperatura: float
     status:      str              # vem do servidor (ou local em caso de falha)
-    data_hora:   str
+    timestamp:   str
     enviado:     bool = True      # False = falha de rede
     erro:        str  = ""
 
@@ -40,10 +40,10 @@ class Historico:
     ) -> Registro:
         reg = Registro(
             uuid        = leitura["id"],
-            id_sensor   = leitura["id_sensor"],
+            sensor_id   = leitura["sensor_id"],
             temperatura = leitura["temperatura"],
             status      = status,
-            data_hora   = leitura.get("data_hora", datetime.now().isoformat(timespec="seconds")),
+            timestamp   = leitura.get("timestamp", datetime.now().isoformat(timespec="seconds")),
             enviado     = enviado,
             erro        = erro,
         )

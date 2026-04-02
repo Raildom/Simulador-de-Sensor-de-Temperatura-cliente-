@@ -204,13 +204,13 @@ class Aplicacao(tk.Tk):
             font=self.fonte_mono, bg=CORES["fundo"], fg=CORES["texto_fraco"],
         ).pack(anchor="w")
 
-        colunas = ("data_hora", "temperatura", "status", "uuid")
+        colunas = ("timestamp", "temperatura", "status", "uuid")
         self._tabela = ttk.Treeview(
             container, columns=colunas, show="headings", height=10,
         )
 
-        larguras = {"data_hora": 140, "temperatura": 100, "status": 90, "uuid": 310}
-        titulos  = {"data_hora": "Data/Hora", "temperatura": "Temp (C)",
+        larguras = {"timestamp": 140, "temperatura": 100, "status": 90, "uuid": 310}
+        titulos  = {"timestamp": "Data/Hora", "temperatura": "Temp (C)",
                     "status": "Status", "uuid": "UUID"}
         for coluna in colunas:
             self._tabela.heading(coluna, text=titulos[coluna])
@@ -364,7 +364,7 @@ class Aplicacao(tk.Tk):
         
         self._tabela.insert(
             "", 0,
-            values=(reg.data_hora, temp_str, status_str, reg.uuid),
+            values=(reg.timestamp, temp_str, status_str, reg.uuid),
             tags=(tag,),
         )
 
