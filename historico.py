@@ -1,34 +1,34 @@
 # ============================================================
-#  history.py  -  Historico local de leituras
+#  historico.py  -  Historico local de leituras
 # ============================================================
 
 from collections import deque
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Deque, List
-from config import MAX_HISTORY_ITEMS
+from config import MAX_ITENS_HISTORICO
 
 
 @dataclass
 class Registro:
     """Representa uma leitura armazenada no historico local."""
     uuid:        str
-    sensor_id:   str
+    id_sensor:   str
     temperatura: float
     status:      str              # vem do servidor (ou local em caso de falha)
-    timestamp:   str
+    data_hora:   str
     enviado:     bool = True      # False = falha de rede
     erro:        str  = ""
 
 
 class Historico:
     """
-    Mantem as ultimas MAX_HISTORY_ITEMS leituras em memoria.
+    Mantem as ultimas MAX_ITENS_HISTORICO leituras em memoria.
     Thread-safe para leitura; gravacao deve ocorrer na thread principal.
     """
 
     def __init__(self) -> None:
-        self._itens: Deque[Registro] = deque(maxlen=MAX_HISTORY_ITEMS)
+        self._itens: Deque[Registro] = deque(maxlen=MAX_ITENS_HISTORICO)
 
     # ------------------------------------------------------------------
     def adicionar(
@@ -40,10 +40,10 @@ class Historico:
     ) -> Registro:
         reg = Registro(
             uuid        = leitura["id"],
-            sensor_id   = leitura["sensor_id"],
+            id_sensor   = leitura["id_sensor"],
             temperatura = leitura["temperatura"],
             status      = status,
-            timestamp   = leitura.get("timestamp", datetime.now().isoformat(timespec="seconds")),
+            data_hora   = leitura.get("data_hora", datetime.now().isoformat(timespec="seconds")),
             enviado     = enviado,
             erro        = erro,
         )

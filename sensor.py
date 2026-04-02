@@ -5,7 +5,7 @@
 import uuid
 import random
 from datetime import datetime
-from config import SENSOR_ID, TEMP_MIN, TEMP_MAX, THRESHOLD_ALERTA, THRESHOLD_CRITICO
+from config import ID_SENSOR, TEMP_MIN, TEMP_MAX, LIMITE_ALERTA, LIMITE_CRITICO
 
 
 def gerar_leitura() -> dict:
@@ -15,17 +15,17 @@ def gerar_leitura() -> dict:
     Retorna um dict pronto para ser serializado em JSON e enviado ao servidor:
         {
             "id":          str  - UUID unico da requisicao (idempotencia),
-            "sensor_id":   str  - identificador do sensor,
+            "id_sensor":   str  - identificador do sensor,
             "temperatura": float - valor gerado aleatoriamente,
-            "timestamp":   str  - ISO-8601 local,
+            "data_hora":   str  - ISO-8601 local,
         }
     """
     temperatura = round(random.uniform(TEMP_MIN, TEMP_MAX), 2)
     return {
         "id":          str(uuid.uuid4()),
-        "sensor_id":   SENSOR_ID,
+        "id_sensor":   ID_SENSOR,
         "temperatura": temperatura,
-        "timestamp":   datetime.now().isoformat(timespec="seconds"),
+        "data_hora":   datetime.now().isoformat(timespec="seconds"),
     }
 
 
@@ -34,8 +34,8 @@ def status_local(temperatura: float) -> str:
     Determina o status com as mesmas regras do servidor.
     Usado para exibicao imediata *antes* da resposta chegar.
     """
-    if temperatura >= THRESHOLD_CRITICO:
+    if temperatura >= LIMITE_CRITICO:
         return "Critico"
-    if temperatura >= THRESHOLD_ALERTA:
+    if temperatura >= LIMITE_ALERTA:
         return "Alerta"
     return "Normal"

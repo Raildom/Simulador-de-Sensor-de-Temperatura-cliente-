@@ -1,5 +1,5 @@
 # ============================================================
-#  api_client.py  -  Comunicacao HTTP com o servidor
+#  cliente_api.py  -  Comunicacao HTTP com o servidor
 # ============================================================
 
 import json
@@ -7,21 +7,21 @@ import threading
 import urllib.request
 import urllib.error
 from typing import Callable
-from config import SERVER_URL, REQUEST_TIMEOUT
+from config import SERVIDOR_URL, TEMPO_LIMITE_REQUISICAO
 
 
 # --------------------------------------------------------------------------
 # Tipos de callback esperados pela GUI
 # --------------------------------------------------------------------------
-# on_success(resposta: dict)      -> chamado quando o servidor responde 2xx
-# on_error(mensagem: str)         -> chamado em falha de rede / resposta invalida
+# ao_sucesso(resposta: dict)      -> chamado quando o servidor responde 2xx
+# ao_erro(mensagem: str)          -> chamado em falha de rede / resposta invalida
 # --------------------------------------------------------------------------
 
 
 def enviar_leitura(
     leitura: dict,
-    on_success: Callable[[dict], None],
-    on_error:   Callable[[str],  None],
+    ao_sucesso: Callable[[dict], None],
+    ao_erro:    Callable[[str],  None],
 ) -> None:
     """
     Envia *leitura* (dict) ao servidor via POST JSON em uma thread separada,
@@ -29,25 +29,25 @@ def enviar_leitura(
     a GUI deve usar `after()` ou filas para atualizar widgets com seguranca.
     """
     thread = threading.Thread(
-        target=_post_worker,
-        args=(leitura, on_success, on_error),
+        target=_trabalhador_post,
+        args=(leitura, ao_sucesso, ao_erro),
         daemon=True,
     )
     thread.start()
 
 
 # --------------------------------------------------------------------------
-# Worker interno (roda em thread separada)
+# Trabalhador interno (roda em thread separada)
 # --------------------------------------------------------------------------
 
-def _post_worker(
+def _trabalhador_post(
     leitura: dict,
-    on_success: Callable[[dict], None],
-    on_error:   Callable[[str],  None],
+    ao_sucesso: Callable[[dict], None],
+    ao_erro:    Callable[[str],  None],
 ) -> None:
     payload = json.dumps(leitura).encode("utf-8")
-    req = urllib.request.Request(
-        url=SERVER_URL,
+    requisicao = urllib.request.Request(
+        url=SERVIDOR_URL,
         data=payload,
         method="POST",
         headers={
@@ -57,14 +57,14 @@ def _post_worker(
     )
 
     try:
-        with urllib.request.urlopen(req, timeout=REQUEST_TIMEOUT) as resp:
-            raw = resp.read().decode("utf-8")
+        with urllib.request.urlopen(requisicao, timeout=TEMPO_LIMITE_REQUISICAO) as resposta:
+            bruto = resposta.read().decode("utf-8")
             try:
-                data = json.loads(raw)
+                dados = json.loads(bruto)
             except json.JSONDecodeError:
-                on_error(f"Resposta invalida do servidor: {raw[:120]}")
+                ao_erro(f"Resposta invalida do servidor: {bruto[:120]}")
                 return
-            on_success(data)
+            ao_sucesso(dados)
 
     except urllib.error.HTTPError as exc:
         # Tenta extrair mensagem de erro do corpo da resposta
@@ -73,13 +73,13 @@ def _post_worker(
             detalhes = json.loads(corpo).get("erro", corpo)
         except Exception:
             detalhes = str(exc)
-        on_error(f"HTTP {exc.code}: {detalhes}")
+        ao_erro(f"HTTP {exc.code}: {detalhes}")
 
     except urllib.error.URLError as exc:
-        on_error(f"Servidor inacessivel - {exc.reason}")
+        ao_erro(f"Servidor inacessivel - {exc.reason}")
 
     except TimeoutError:
-        on_error("Tempo-limite da requisicao esgotado.")
+        ao_erro("Tempo-limite da requisicao esgotado.")
 
     except Exception as exc:
-        on_error(f"Erro inesperado: {exc}")
+        ao_erro(f"Erro inesperado: {exc}")

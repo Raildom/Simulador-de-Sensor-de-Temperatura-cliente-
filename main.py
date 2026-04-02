@@ -1,14 +1,14 @@
 # ============================================================
-#  main.py  -  Ponto de entrada do cliente
+#  principal.py  -  Ponto de entrada do cliente
 # ============================================================
 
-from gui import App
+from gui import Aplicacao
 
 
-def main() -> None:
-    app = App()
+def principal() -> None:
+    app = Aplicacao()
     app.mainloop()
 
 
 if __name__ == "__main__":
-    main()
+    principal()

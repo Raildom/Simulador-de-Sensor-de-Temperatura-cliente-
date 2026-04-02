@@ -3,22 +3,22 @@
 # ============================================================
 
 # --- Servidor -----------------------------------------------------------
-SERVER_HOST = "127.0.0.1"   # Altere para o IP/hostname do servidor real
-SERVER_PORT = 5000
-SERVER_URL  = f"http://{SERVER_HOST}:{SERVER_PORT}/leitura"
+SERVIDOR_HOST = "127.0.0.1"   # Altere para o IP/hostname do servidor real
+SERVIDOR_PORTA = 5000
+SERVIDOR_URL  = f"http://{SERVIDOR_HOST}:{SERVIDOR_PORTA}/leitura"
 
 # Tempo-limite (segundos) para cada requisicao HTTP
-REQUEST_TIMEOUT = 5
+TEMPO_LIMITE_REQUISICAO = 5
 
 # --- Sensor -------------------------------------------------------------
-SENSOR_ID       = "SENSOR-01"
-TEMP_MIN        = 0.0     # C minimo gerado
-TEMP_MAX        = 100.0      # C maximo gerado
-SEND_INTERVAL_MS = 3000     # intervalo automatico de envio (ms)
+ID_SENSOR       = "SENSOR-01"
+TEMP_MIN        = -10.0     # C minimo gerado
+TEMP_MAX        = 40.0      # C maximo gerado
+INTERVALO_ENVIO_MS = 3000     # intervalo automatico de envio (ms)
 
 # --- Regras de status (espelhadas localmente para exibicao imediata) ----
-THRESHOLD_ALERTA   = 30.0   # C  ->  Alerta
-THRESHOLD_CRITICO  = 60.0   # C  ->  Critico
+LIMITE_ALERTA   = 10.0   # C  ->  Alerta
+LIMITE_CRITICO  = 20.0   # C  ->  Critico
 
 # --- Historico local ----------------------------------------------------
-MAX_HISTORY_ITEMS = 10      # linhas exibidas na tabela
+MAX_ITENS_HISTORICO = 10      # linhas exibidas na tabela
