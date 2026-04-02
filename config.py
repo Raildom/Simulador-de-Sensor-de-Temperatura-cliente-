@@ -21,4 +21,4 @@ THRESHOLD_ALERTA   = 30.0   # C  ->  Alerta
 THRESHOLD_CRITICO  = 60.0   # C  ->  Critico
 
 # --- Historico local ----------------------------------------------------
-MAX_HISTORY_ITEMS = 50      # linhas exibidas na tabela
+MAX_HISTORY_ITEMS = 10      # linhas exibidas na tabela

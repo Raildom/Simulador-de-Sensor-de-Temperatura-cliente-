@@ -11,7 +11,7 @@ import sensor as sensor_mod
 from history import Historico
 from config import (
     SENSOR_ID, SERVER_URL, SEND_INTERVAL_MS,
-    THRESHOLD_ALERTA, THRESHOLD_CRITICO,
+    THRESHOLD_ALERTA, THRESHOLD_CRITICO, MAX_HISTORY_ITEMS,
 )
 
 # -- Paleta de cores --------------------------------------------------------
@@ -356,6 +356,12 @@ class App(tk.Tk):
         tag = reg.status if reg.enviado else "Falha"
         temp_str = f"{reg.temperatura:+.2f}"
         status_str = reg.status if reg.enviado else f"Falha ({reg.status})"
+        
+        # Remove a linha mais antiga se atingiu o limite
+        children = self._tree.get_children()
+        if len(children) >= MAX_HISTORY_ITEMS:
+            self._tree.delete(children[-1])  # remove a ultima (mais antiga)
+        
         self._tree.insert(
             "", 0,
             values=(reg.timestamp, temp_str, status_str, reg.uuid),
