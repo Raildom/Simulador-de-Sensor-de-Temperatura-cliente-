@@ -4,8 +4,8 @@
 
 # --- Servidor -----------------------------------------------------------
 SERVIDOR_HOST = "127.0.0.1"   # Altere para o IP/hostname do servidor real
-SERVIDOR_PORTA = 5000
-SERVIDOR_URL  = f"http://{SERVIDOR_HOST}:{SERVIDOR_PORTA}/leitura"
+SERVIDOR_PORTA = 8000
+SERVIDOR_URL  = f"http://{SERVIDOR_HOST}:{SERVIDOR_PORTA}/leituras/"
 
 # Tempo-limite (segundos) para cada requisicao HTTP
 TEMPO_LIMITE_REQUISICAO = 5
