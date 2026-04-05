@@ -18,7 +18,7 @@ INTERVALO_ENVIO_MS = 3000     # intervalo automatico de envio (ms)
 
 # --- Regras de status (espelhadas localmente para exibicao imediata) ----
 LIMITE_ALERTA   = 10.0   # C  ->  Alerta
-LIMITE_CRITICO  = 20.0   # C  ->  Critico
+LIMITE_CRITICO  = 15.0   # C  ->  Critico, antes era 20, coloquei para 15
 
 # --- Historico local ----------------------------------------------------
 MAX_ITENS_HISTORICO = 10      # linhas exibidas na tabela
